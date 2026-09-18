@@ -1,0 +1,7 @@
+# Configurações do PhpStorm / JetBrains
+.idea/
+
+# Outros arquivos temporários e de configuração
+.env
+vendor/
+*.log
