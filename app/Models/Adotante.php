@@ -1,16 +1,17 @@
 <?php
 
-class Adotante
+namespace Models;
+/*
+ *
+ * AQUI PRECISA Buscar dados de acesso e validaR senhas no login, só copiei e colei das outras classes
+ *
+ * PRECISA AJUSTAR!!!!
+ *
+ * */
+class Adotante extends Model
 {
-    private PDO $db;
-
-    public function __construct(PDO $db)
-    {
-        $this->db = $db;
-    }
-
     // ?string quando aceita nulo
-    public function create
+    public function cadastrar
     (
         string $cpf,
         string $telefone,
@@ -37,7 +38,7 @@ class Adotante
         // A ideia é que esses statments protegem contra SQL Injection pois o valor é tratado como um dado e não como um código SQL
     }
 
-    public function delete(int $id): bool
+    public function apagar(int $id): bool
     {
         $query = $this->db->prepare("DELETE FROM adotantes_perfis WHERE id = :id");
         return $query->execute(['id' => $id]);
@@ -50,7 +51,7 @@ class Adotante
         return $query->fetch() ?: null; // Retorna o adotante encontrado
     }
 
-    public function update
+    public function atualizar
     (
         int $id,
         int $usuario_id,

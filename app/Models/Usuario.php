@@ -1,15 +1,9 @@
 <?php
 
-class Usuario
+namespace Models;
+class Usuario extends Model
 {
-    private PDO $db;
-
-    public function __construct(PDO $db)
-    {
-        $this->db = $db;
-    }
-
-    public function create
+    public function cadastrar
     (
         string $nome,
         string $email,
@@ -33,7 +27,7 @@ class Usuario
         ]);
     }
 
-    public function delete(int $id): bool
+    public function apagar(int $id): bool
     {
         $query = $this->db->prepare("DELETE FROM usuarios WHERE id = :id");
         return $query->execute(['id' => $id]);
@@ -46,7 +40,7 @@ class Usuario
         return $query->fetch() ?: null;
     }
 
-    public function update
+    public function atualizar
     (
         int $id,
         string $nome,

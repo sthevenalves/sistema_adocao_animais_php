@@ -7,7 +7,7 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 ## 👥 Divisão de Responsabilidades
 
 ### Parte 1: Infraestrutura, Autenticação e Roteamento
-* **Banco de Dados & Containerization:** Criação do arquivo `docker-compose.yml`, script SQL base (`script.sql`) e arquivo de conexão PDO (`database.php`).
+* **Banco de Dados & Containerization:** Criação do arquivo `docker-compose.yml`, script SQL base (`script.sql`) e arquivo de conexão PDO (`Database.php`).
 * **Arquitetura MVC & Roteamento:** Configuração do Front Controller (`public/index.php`) e resolução de rotas da aplicação.
 * **Autenticação e Sessões:** Sistema de Login, Logout, criptografia de senhas (`password_hash`) e controle de acesso a áreas restritas (`$_SESSION`).
 * **Layout Base:** Templates reutilizáveis de cabeçalho e rodapé (`header.php` e `footer.php`).

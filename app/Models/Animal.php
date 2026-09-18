@@ -1,14 +1,10 @@
 <?php
 
-class Animal
-{
-    private PDO $db;
+namespace Models;
 
-    public function __construct(PDO $db)
-    {
-        $this->db = $db;
-    }
-    public function create
+class Animal extends Model
+{
+    public function cadastrar
     (
         string $nome,
         string $especie,
@@ -41,7 +37,7 @@ class Animal
         // A ideia é que esses statments protegem contra SQL Injection pois o valor é tratado como um dado e não como um código SQL
     }
 
-    public function delete(int $id): bool
+    public function apagar(int $id): bool
     {
         $query = $this->db->prepare("DELETE FROM animais WHERE id = :id");
         return $query->execute(['id' => $id]);
@@ -54,7 +50,7 @@ class Animal
         return $query->fetch() ?: null; // Retorna o animal encontrado
     }
 
-    public function update
+    public function atualizar
     (
         int $id,
         string $nome,
@@ -89,5 +85,15 @@ class Animal
             'descricao' => $descricao,
             'status' => $status
         ]);
+    }
+
+    public function findAll(): array
+    {
+        $query = $this->db->query
+        (
+            "SELECT * FROM animais"
+        );
+
+        return $query->fetchAll(); // Retorna a lista de todos os animais
     }
 }
