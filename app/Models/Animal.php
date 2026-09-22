@@ -10,9 +10,9 @@ class Animal extends Model
         string $especie,
         int $idade_anos,
         string $porte,
-        int $vacinado,
-        ?string $descricao, // ?string quando aceita nulo
-        string $status): bool
+        int $vacinado = 0,
+        ?string $descricao = null,
+        string $status = 'disponivel'): bool
     {
         // Com prepare() a query SQL é enviado ao banco sem os valores ainda, com tipo um placeholder :id no lugar do valor real
         $query = $this->db->prepare

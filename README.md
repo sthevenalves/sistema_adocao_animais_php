@@ -7,7 +7,7 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 ## 👥 Divisão de Responsabilidades
 
 ### Parte 1: Infraestrutura, Autenticação e Roteamento
-* **Banco de Dados & Containerization:** Criação do arquivo `docker-compose.yml`, script SQL base (`script.sql`) e arquivo de conexão PDO (`Database.php`).
+* **Banco de Dados & Containerization:** Criação do `Dockerfile`, arquivo `docker-compose.yaml`, script SQL base (`script.sql`) e arquivo de conexão PDO (`Database.php`).
 * **Arquitetura MVC & Roteamento:** Configuração do Front Controller (`public/index.php`) e resolução de rotas da aplicação.
 * **Autenticação e Sessões:** Sistema de Login, Logout, criptografia de senhas (`password_hash`) e controle de acesso a áreas restritas (`$_SESSION`).
 * **Layout Base:** Templates reutilizáveis de cabeçalho e rodapé (`header.php` e `footer.php`).
@@ -28,17 +28,18 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 ```text
 sistema-adocao/
 ├── config/
-│   └── database.php          # [Parte 1] Configura e estabelece a conexão PDO com o MySQL
+│   └── Database.php          # [Parte 1] Configura e estabelece a conexão PDO com o MySQL
 │
 ├── sql/
 │   └── script.sql            # [Parte 1/2] Script SQL de criação do banco e das tabelas
 │
 ├── app/
 │   ├── Models/               # [Classes] Interagem diretamente com o MySQL
+│   │   ├── Model.php         # [Parte 1] Classe base para modelos com conexão PDO
 │   │   ├── Usuario.php       # [Parte 1] Busca dados de acesso e valida senhas no login
 │   │   ├── Animal.php        # [Parte 2] SQLs de inserção, edição e consulta de pets
 │   │   ├── Adotante.php      # [Parte 2] SQLs do perfil do adotante
-│   │   └── Solicitacao.php   # [Parte 2] SQLs do processo de adoção e mudança de status
+│   │   └── SolicitacaoAdocao.php # [Parte 2] SQLs do processo de adoção e mudança de status
 │   │
 │   ├── Controllers/          # [Classes] Intermediam regra de negócio, validações e views
 │   │   ├── AuthController.php# [Parte 1] Processa login, encerra sessão e restringe acessos
@@ -55,8 +56,8 @@ sistema-adocao/
 │       │   └── login.php     # Formulário de entrada no sistema
 │       │
 │       ├── animais/          # [Parte 2] Módulo de Pets
-│       │   ├── index.php     # Tabela/cards com listagem dos animais
-│       │   └── form.php      # Formulário único de cadastro e edição de animal
+│       │   ├── index.php     # Tabela com listagem dos animais
+│       │   └── form.php      # Formulário de cadastro de animal
 │       │
 │       ├── adotantes/        # [Parte 2] Módulo de Adotantes
 │       │   ├── index.php     # Listagem de pessoas cadastradas
@@ -70,9 +71,12 @@ sistema-adocao/
 │           └── feedback.php  # Bloco em PHP que exibe alertas de erro/sucesso da sessão
 │
 ├── public/
+│   ├── css/
+│   │   └── style.css         # [Parte 1] Folha de estilos CSS da aplicação
 │   └── index.php             # [Parte 1] Front Controller: recebe as requisições e inicia a app
 │
-├── docker-compose.yml        # [Parte 1] Configuração dos containers Docker (MySQL + phpMyAdmin)
+├── Dockerfile                # [Parte 1] Configuração da imagem PHP CLI com extensões PDO MySQL
+├── docker-compose.yaml       # [Parte 1] Configuração dos containers Docker (PHP App, MySQL + phpMyAdmin)
 ├── config.md                 # Guia de configuração do ambiente, Docker e credenciais
 └── README.md                 # Documentação principal e instruções de execução
 ```
@@ -82,22 +86,22 @@ sistema-adocao/
 ## Como Executar a Aplicação
 
 ### 1. Pré-requisitos
-* **PHP 8.0+** instalado localmente na máquina.
 * **Docker** e **Docker Compose** instalados e em execução.
+* **PHP 8.0+** instalado localmente na máquina (opcional caso execute via container).
 
-### 2. Iniciar o Banco de Dados (Docker)
-Na raiz do projeto, suba os containers em segundo plano:
+### 2. Iniciar o Ambiente com Docker (Dockerfile + Docker Compose)
+Na raiz do projeto, construa a imagem do Dockerfile e suba todos os containers (aplicação PHP, MySQL e phpMyAdmin) em segundo plano:
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 > *Para consultar credenciais detalhadas, portas e utilitários do banco, veja o arquivo [`config.md`](./config.md).*
 
-### 3. Iniciar o Servidor Web do PHP
-No terminal na raiz do projeto, inicie o servidor embutido do PHP apontando para o diretório público:
+*(Opcional: Iniciar o Servidor Web do PHP Localmente)*
+Caso deseje executar o PHP localmente na máquina hospedeira em vez de usar o container da aplicação:
 ```bash
 php -S localhost:8000 -t public
 ```
 
-### 4. Acessar o Sistema
+### 3. Acessar o Sistema
 * **Aplicação Web:** `http://localhost:8000`
 * **Gerenciador de Banco (phpMyAdmin):** `http://localhost:8080`

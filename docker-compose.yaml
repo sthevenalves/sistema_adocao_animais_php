@@ -1,4 +1,17 @@
 services:
+  app:
+    build: .
+    container_name: php_ong
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: php -S 0.0.0.0:8000 -t public
+    depends_on:
+      - db
+
   db:
     image: mysql:8.4
     container_name: mysql_ong
