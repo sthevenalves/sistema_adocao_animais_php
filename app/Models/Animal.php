@@ -96,4 +96,14 @@ class Animal extends Model
 
         return $query->fetchAll(); // Retorna a lista de todos os animais
     }
+
+    public function findDisponiveis(): array
+    {
+        $query = $this->db->query
+        (
+            "SELECT * FROM animais WHERE status = 'disponivel'"
+        );
+
+        return $query->fetchAll();
+    }
 }

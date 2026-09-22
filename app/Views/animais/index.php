@@ -6,17 +6,8 @@
         <a href="/animais/criar" class="btn">+ Novo Animal</a>
     </div>
 
-    <!-- LEITURA DA MENSAGEM DA SESSÃO: "Animal cadastrado com sucesso!" -->
-<?php if (isset($_SESSION['feedback'])): ?>
-    <?php
-    $tipo = $_SESSION['feedback']['tipo'];
-    $mensagem = $_SESSION['feedback']['mensagem'];
-    unset($_SESSION['feedback']);
-    ?>
-    <div class="alerta-<?= $tipo ?>">
-        <?= htmlspecialchars($mensagem) ?>
-    </div>
-<?php endif; ?>
+    <!-- LEITURA DA MENSAGEM DA SESSÃO VIA COMPONENTE -->
+    <?php require_once __DIR__ . '/../includes/feedback.php'; ?>
 
     <!-- TABELA COM OS DADOS VINDO DO CONTROLLER -->
     <table>
@@ -26,6 +17,8 @@
             <th>Nome</th>
             <th>Espécie</th>
             <th>Idade</th>
+            <th>Porte</th>
+            <th>Vacinado</th>
             <th>Status</th>
         </tr>
         </thead>
@@ -37,12 +30,14 @@
                     <td><?= htmlspecialchars($animal['nome']) ?></td>
                     <td><?= htmlspecialchars($animal['especie']) ?></td>
                     <td><?= htmlspecialchars($animal['idade_anos']) ?> ano(s)</td>
+                    <td><?= htmlspecialchars($animal['porte']) ?></td>
+                    <td><?= !empty($animal['vacinado']) ? 'Sim' : 'Não' ?></td>
                     <td><?= htmlspecialchars($animal['status']) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="5">Nenhum animal cadastrado no momento.</td>
+                <td colspan="7">Nenhum animal cadastrado no momento.</td>
             </tr>
         <?php endif; ?>
         </tbody>

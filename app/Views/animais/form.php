@@ -3,21 +3,8 @@
 
 <h2>Cadastrar Novo Pet</h2>
 
-<!-- LEITURA E EXIBIÇÃO DO AVISO DA SESSÃO -->
-<?php if (isset($_SESSION['feedback'])): ?> <!-- Vê se o Controller deixou alguma mensagem guardada na $_SESSION['feedback'] -->
-    <?php
-    // Recupera 'erro' ou 'sucesso' e o texto da mensagem enviados pelo Controller na sessão
-    $tipo = $_SESSION['feedback']['tipo'];
-    $mensagem = $_SESSION['feedback']['mensagem'];
-
-    // Limpa a sessão logo após ler, pois a mensagem precisa desaparecer se o usuário recarregar a página
-    unset($_SESSION['feedback']);
-    ?>
-    <!-- A classe CSS muda dependendo da variável $tipo, virando 'alerta-erro' ou 'alerta-sucesso' -->
-    <div class="alerta-<?= $tipo ?>">
-        <?= htmlspecialchars($mensagem) ?>
-    </div>
-<?php endif; ?>
+<!-- LEITURA E EXIBIÇÃO DO AVISO DA SESSÃO VIA COMPONENTE -->
+<?php require_once __DIR__ . '/../includes/feedback.php'; ?>
 
 <!-- FORMULÁRIO QUE APONTA PARA O CONTROLLER -->
 <!-- 'action': Para qual rota da aplicação esses dados serão enviados ao clicar em Salvar -->

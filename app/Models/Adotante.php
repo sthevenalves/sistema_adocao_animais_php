@@ -1,41 +1,30 @@
 <?php
 
 namespace Models;
-/*
- *
- * AQUI PRECISA Buscar dados de acesso e validaR senhas no login, só copiei e colei das outras classes
- *
- * PRECISA AJUSTAR!!!!
- *
- * */
+
 class Adotante extends Model
 {
-    // ?string quando aceita nulo
-    public function cadastrar
-    (
+    public function cadastrar(
+        int $usuario_id,
         string $cpf,
         string $telefone,
         string $tipo_moradia,
-        int $tem_outros_pets): bool
-    {
-        // Com prepare() a query SQL é enviado ao banco sem os valores ainda, apenas com um placeholder :id no lugar do valor real
-        $query = $this->db->prepare
-        (
-            "INSERT INTO 
-                    adotantes_perfis(cpf, telefone, tipo_moradia, tem_outros_pets) 
-                   VALUES 
-                    (:cpf, :telefone, :tipo_moradia, :tem_outros_pets)"
+        int $tem_outros_pets = 0
+    ): bool {
+        $query = $this->db->prepare(
+            "INSERT INTO adotantes_perfis 
+                (usuario_id, cpf, telefone, tipo_moradia, tem_outros_pets) 
+             VALUES 
+                (:usuario_id, :cpf, :telefone, :tipo_moradia, :tem_outros_pets)"
         );
-        // Com execute() roda a query, substituindo o placeholder :id pelo valor de $id que você passou no array
-        return $query->execute
-        ([
+
+        return $query->execute([
+            'usuario_id' => $usuario_id,
             'cpf' => $cpf,
             'telefone' => $telefone,
             'tipo_moradia' => $tipo_moradia,
             'tem_outros_pets' => $tem_outros_pets
         ]);
-
-        // A ideia é que esses statments protegem contra SQL Injection pois o valor é tratado como um dado e não como um código SQL
     }
 
     public function apagar(int $id): bool
@@ -46,22 +35,25 @@ class Adotante extends Model
 
     public function findByID(int $id): ?array
     {
-        $query = $this->db->prepare("SELECT * FROM adotantes_perfis WHERE id = :id");
+        $query = $this->db->prepare(
+            "SELECT ap.*, u.nome AS usuario_nome, u.email AS usuario_email 
+             FROM adotantes_perfis ap
+             JOIN usuarios u ON ap.usuario_id = u.id
+             WHERE ap.id = :id"
+        );
         $query->execute(['id' => $id]);
-        return $query->fetch() ?: null; // Retorna o adotante encontrado
+        return $query->fetch() ?: null;
     }
 
-    public function atualizar
-    (
+    public function atualizar(
         int $id,
         int $usuario_id,
         string $cpf,
         string $telefone,
         string $tipo_moradia,
-        int $tem_outros_pets): bool
-    {
-        $query = $this->db->prepare
-        (
+        int $tem_outros_pets
+    ): bool {
+        $query = $this->db->prepare(
             "UPDATE adotantes_perfis
              SET usuario_id = :usuario_id,
                  cpf = :cpf,
@@ -71,8 +63,7 @@ class Adotante extends Model
              WHERE id = :id"
         );
 
-        return $query->execute
-        ([
+        return $query->execute([
             'id' => $id,
             'usuario_id' => $usuario_id,
             'cpf' => $cpf,
@@ -80,5 +71,23 @@ class Adotante extends Model
             'tipo_moradia' => $tipo_moradia,
             'tem_outros_pets' => $tem_outros_pets
         ]);
+    }
+
+    public function findAll(): array
+    {
+        $query = $this->db->query(
+            "SELECT ap.*, u.nome AS usuario_nome, u.email AS usuario_email 
+             FROM adotantes_perfis ap
+             JOIN usuarios u ON ap.usuario_id = u.id
+             ORDER BY ap.id ASC"
+        );
+
+        return $query->fetchAll();
+    }
+
+    public function buscarUsuarios(): array
+    {
+        $query = $this->db->query("SELECT id, nome, email, tipo FROM usuarios ORDER BY nome ASC");
+        return $query->fetchAll();
     }
 }
