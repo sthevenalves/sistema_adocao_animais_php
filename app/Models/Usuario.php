@@ -40,6 +40,13 @@ class Usuario extends Model
         return $query->fetch() ?: null;
     }
 
+    public function findByEmail(string $email): ?array
+    {
+        $query = $this->db->prepare("SELECT * FROM usuarios WHERE email = :email");
+        $query->execute(['email' => $email]);
+        return $query->fetch() ?: null;
+    }
+
     public function atualizar
     (
         int $id,
