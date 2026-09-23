@@ -7,10 +7,12 @@ if (session_status() === PHP_SESSION_NONE) {
 // 1. Carrega a conexão com o banco e os arquivos necessários
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../app/Models/Model.php';
+require_once __DIR__ . '/../app/Models/Usuario.php';
 require_once __DIR__ . '/../app/Models/Animal.php';
 require_once __DIR__ . '/../app/Models/Adotante.php';
 require_once __DIR__ . '/../app/Models/SolicitacaoAdocao.php';
 
+require_once __DIR__ . '/../app/Controllers/AuthController.php';
 require_once __DIR__ . '/../app/Controllers/AnimalController.php';
 require_once __DIR__ . '/../app/Controllers/AdotanteController.php';
 require_once __DIR__ . '/../app/Controllers/SolicitacaoController.php';
