@@ -17,9 +17,26 @@ require_once __DIR__ . '/../app/Controllers/AnimalController.php';
 require_once __DIR__ . '/../app/Controllers/AdotanteController.php';
 require_once __DIR__ . '/../app/Controllers/SolicitacaoController.php';
 
+use Controllers\AuthController;
 use Controllers\AnimalController;
 use Controllers\AdotanteController;
 use Controllers\SolicitacaoController;
+
+
+function exigirLogin(string $uriAtual): void
+{
+    if (empty($_SESSION['usuario'])) {
+        $_SESSION['feedback'] = [
+            'tipo' => 'erro',
+            'mensagem' => 'Faça login para acessar essa página.',
+        ];
+        // guarda a pagina que o usuario queria ver, pra AuthController::autenticar()
+        // poder mandar de volta pra ela depois do login
+        $_SESSION['pos_login_redirect'] = $uriAtual;
+        header('Location: /login');
+        exit;
+    }
+}
 
 // 2. Pega o caminho da URL acessada no navegador
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
