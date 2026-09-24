@@ -14,7 +14,7 @@ class Adotante extends Model
         $query = $this->db->prepare(
             "INSERT INTO adotantes_perfis 
                 (usuario_id, cpf, telefone, tipo_moradia, tem_outros_pets) 
-             VALUES 
+            VALUES 
                 (:usuario_id, :cpf, :telefone, :tipo_moradia, :tem_outros_pets)"
         );
 
