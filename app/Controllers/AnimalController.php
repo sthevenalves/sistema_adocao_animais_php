@@ -21,10 +21,126 @@ class AnimalController
         require_once __DIR__ . '/../Views/animais/index.php'; // Carrega o arquivo HTML/PHP da View
     }
 
-    public function form(): void
-    {
-        require_once __DIR__ . '/../Views/animais/form.php';
+    // Exibe o formulário de cadastro ou edição
+public function form(): void
+{
+    $id = (int) ($_GET['id'] ?? 0);
+
+    $animal = null;
+
+    // Se recebeu um ID, busca o animal para edição
+    if ($id > 0) {
+        $animal = $this->animalModel->findByID($id);
+
+        if (!$animal) {
+            $_SESSION['feedback'] = [
+                'tipo' => 'erro',
+                'mensagem' => 'Animal não encontrado.'
+            ];
+
+            header('Location: /animais');
+            exit;
+        }
     }
+
+    require_once __DIR__ . '/../Views/animais/form.php';
+}
+
+// Atualiza um animal existente
+public function atualizar(): void
+{
+    $id = (int) ($_POST['id'] ?? 0);
+
+    $nome = trim($_POST['nome'] ?? '');
+    $especie = trim($_POST['especie'] ?? '');
+    $idade = $_POST['idade'] ?? null;
+    $vacinado = !empty($_POST['vacinado']) ? 1 : 0;
+    $descricao = isset($_POST['descricao']) && trim($_POST['descricao']) !== ''
+        ? trim($_POST['descricao'])
+        : null;
+
+    $porteInput = ucfirst(strtolower(trim($_POST['porte'] ?? '')));
+    $portesPermitidos = ['Pequeno', 'Medio', 'Grande'];
+
+    $porte = in_array($porteInput, $portesPermitidos, true)
+        ? $porteInput
+        : 'Medio';
+
+    $status = trim($_POST['status'] ?? 'disponivel');
+    $statusPermitidos = ['disponivel', 'em_processo', 'adotado'];
+
+    if (!in_array($status, $statusPermitidos, true)) {
+        $status = 'disponivel';
+    }
+
+    $dadosParaValidar = [
+        'nome' => $nome,
+        'especie' => $especie,
+        'idade' => $idade,
+        'descricao' => $descricao
+    ];
+
+    $erro = $this->validarFormulario($dadosParaValidar);
+
+    if ($erro !== null) {
+        $_SESSION['feedback'] = [
+            'tipo' => 'erro',
+            'mensagem' => $erro
+        ];
+
+        header('Location: /animais/editar?id=' . $id);
+        exit;
+    }
+
+    $sucesso = $this->animalModel->atualizar(
+        $id,
+        $nome,
+        $especie,
+        (int) $idade,
+        $porte,
+        $vacinado,
+        $descricao,
+        $status
+    );
+
+    $_SESSION['feedback'] = [
+        'tipo' => $sucesso ? 'sucesso' : 'erro',
+        'mensagem' => $sucesso
+            ? 'Animal atualizado com sucesso!'
+            : 'Erro ao atualizar o animal.'
+    ];
+
+    header('Location: /animais');
+    exit;
+}
+
+// Exclui um animal
+public function apagar(): void
+{
+    $id = (int) ($_POST['id'] ?? 0);
+
+    if ($id <= 0) {
+        $_SESSION['feedback'] = [
+            'tipo' => 'erro',
+            'mensagem' => 'Animal inválido.'
+        ];
+
+        header('Location: /animais');
+        exit;
+    }
+
+    $sucesso = $this->animalModel->apagar($id);
+
+    $_SESSION['feedback'] = [
+        'tipo' => $sucesso ? 'sucesso' : 'erro',
+        'mensagem' => $sucesso
+            ? 'Animal excluído com sucesso!'
+            : 'Erro ao excluir o animal.'
+    ];
+
+    header('Location: /animais');
+    exit;
+}
 
     // Valida os dados do formulário
     private function validarFormulario(array $dados): ?string
@@ -56,6 +172,8 @@ class AnimalController
 
         return null; // Retorna null se não houver erros
     }
+
+    
 
     // Processa o envio do formulário (POST)
     public function salvar(): void
@@ -126,4 +244,6 @@ class AnimalController
         }
         exit;
     }
+
+    
 }
