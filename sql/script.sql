@@ -46,6 +46,18 @@ CREATE TABLE solicitacoes_adocao (
     FOREIGN KEY (adotante_id) REFERENCES adotantes_perfis(id)
 );
 
+<<<<<<< HEAD
+=======
+# Inserções de usuarios
+INSERT INTO usuarios (nome, email, senha, tipo) VALUES
+('Admin ONG', 'admin@ong.com', '$2y$10$Hr//bw5zm/bS3sp86w.Hne1DLcdK87QqGs8bvN2XqoKK4l9rMvYay', 'admin'),
+('João Silva', 'joao@email.com', 'hash_senha_user', 'adotante'),
+('Maria Oliveira', 'maria@email.com', 'hash_senha_user2', 'adotante'),
+('Carlos Souza', 'carlos@email.com', 'hash_senha_user3', 'adotante'),
+('Ana Lima', 'ana@email.com', 'hash_senha_user4', 'adotante'),
+('Suporte ONG', 'suporte@ong.com', 'hash_senha_admin2', 'admin');
+
+>>>>>>> e72d342 (fix: corrige hash das senhas dos usuários)
 # Inserções de animais
 INSERT INTO animais (nome, especie, idade_anos, porte, vacinado, descricao, status) VALUES
 ('Woody', 'Cachorro', 3, 'Pequeno', 1, 'Branco e caramelo', 'disponivel'),
