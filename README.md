@@ -4,6 +4,13 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 
 ---
 
+## 👤 Integrantes
+
+* **Nome do Integrante 1**: Tobias Rocha
+* **Nome do Integrante 2**: Stheven Alves
+
+---
+
 ## 👥 Divisão de Responsabilidades
 
 ### Parte 1: Infraestrutura, Autenticação e Roteamento
@@ -20,6 +27,22 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 * **Processo de Adoção (CRUD 3):** Fluxo de solicitação de adoção e painel administrativo para alteração de etapas (*Pendente*, *Aprovado*, *Rejeitado*).
 * **Validações & Feedback:** Tratamento de erros no lado do servidor em PHP e renderização de alertas de erro/sucesso.
 * **Documentação:** Elaboração do relatório de entrega, mapeamento de arquivos e guias de execução.
+
+---
+
+## ⚠️ Limitações Conhecidas
+
+### 1. Validação de CPF
+* O CPF **não tem validação completa**: os dígitos verificadores não são conferidos, então CPFs inválidos (ex.: `111.111.111-11`) podem ser cadastrados.
+* Não há tratamento padronizado do formato (com ou sem pontos e traço), o que pode gerar registros inconsistentes no banco.
+
+### 2. Validação e formato do telefone
+* O telefone **não é validado nem normalizado** em relação ao formato definido no banco de dados. Números fora do padrão esperado (DDD, quantidade de dígitos, máscara) podem ser aceitos no formulário e causar inconsistência ou erro ao salvar.
+
+### 3. Ausência de controle de perfis (Admin × Usuário comum)
+* **Não existe separação de permissões entre administrador e usuário comum.** Qualquer usuário autenticado tem acesso a **todas** as funcionalidades do sistema.
+* Ações que deveriam ser exclusivas de um administrador, como **aprovar/rejeitar solicitações de adoção**, cadastrar/editar animais e listar adotantes, ficam disponíveis para todos.
+* Não há validação de perfil nas rotas nem nos controllers, e a interface exibe os mesmos menus para qualquer usuário.
 
 ---
 
