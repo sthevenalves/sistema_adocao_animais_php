@@ -15,7 +15,9 @@
             <?php if (!empty($animais)): ?>
                 <?php foreach ($animais as $animal): ?>
                     <option value="<?= htmlspecialchars($animal['id']) ?>">
-                        <?= htmlspecialchars($animal['nome']) ?> (<?= htmlspecialchars($animal['especie']) ?>) - Status: <?= htmlspecialchars($animal['status']) ?>
+                        <?= htmlspecialchars($animal['nome']) ?>
+                        (<?= htmlspecialchars($animal['especie']) ?>)
+                        - Status: <?= htmlspecialchars($animal['status']) ?>
                     </option>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -29,7 +31,9 @@
             <?php if (!empty($adotantes)): ?>
                 <?php foreach ($adotantes as $adotante): ?>
                     <option value="<?= htmlspecialchars($adotante['id']) ?>">
-                        <?= htmlspecialchars($adotante['usuario_nome']) ?> (CPF: <?= htmlspecialchars($adotante['cpf']) ?> - <?= htmlspecialchars($adotante['tipo_moradia']) ?>)
+                        <?= htmlspecialchars($adotante['usuario_nome']) ?>
+                        (CPF: <?= htmlspecialchars($adotante['cpf']) ?>
+                        - <?= htmlspecialchars($adotante['tipo_moradia']) ?>)
                     </option>
                 <?php endforeach; ?>
             <?php endif; ?>

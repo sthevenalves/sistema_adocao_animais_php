@@ -26,6 +26,37 @@ class AnimalController
         require_once __DIR__ . '/../Views/animais/form.php';
     }
 
+    // Valida os dados do formulário
+    private function validarFormulario(array $dados): ?string
+    {
+        $nome = trim($dados['nome'] ?? '');
+        $especie = trim($dados['especie'] ?? '');
+        $idade = $dados['idade'] ?? null;
+        $descricao = $dados['descricao'] ?? null;
+
+        // Verifica se há campos vazios
+        if (empty($nome) || empty($especie) || $idade === null || $idade === '') {
+            return 'Preencha todos os campos obrigatórios!';
+        }
+
+        // Limita o nome em 100 caracteres
+        if (mb_strlen($nome) > 100) {
+            return 'O nome não pode ter mais de 100 caracteres.';
+        }
+
+        // Limita o nome em 100 caracteres
+        if (!is_numeric($idade) || (int)$idade < 0) {
+            return 'A idade deve ser um número inteiro positivo.';
+        }
+
+        // Limita o nome em 1000 caracteres
+        if ($descricao !== null && mb_strlen($descricao) > 1000) {
+            return 'A descrição é muito longa (máximo de 1000 caracteres).';
+        }
+
+        return null; // Retorna null se não houver erros
+    }
+
     // Processa o envio do formulário (POST)
     public function salvar(): void
     {
@@ -33,31 +64,37 @@ class AnimalController
         $nome = trim($_POST['nome'] ?? '');
         $especie = trim($_POST['especie'] ?? '');
         $idade = $_POST['idade'] ?? ($_POST['idade_anos'] ?? null);
-        $porte = trim($_POST['porte'] ?? '');
         $vacinado = !empty($_POST['vacinado']) ? 1 : 0;
         $descricao = isset($_POST['descricao']) && trim($_POST['descricao']) !== '' ? trim($_POST['descricao']) : null;
         $status = trim($_POST['status'] ?? 'disponivel');
 
+        // Define o valor padrão de porte como médio se não for preenchido
+        $porteInput = ucfirst(strtolower(trim($_POST['porte'] ?? '')));
+        $portesPermitidos = ['Pequeno', 'Medio', 'Grande'];
+        $porte = in_array($porteInput, $portesPermitidos, true) ? $porteInput : 'Medio'; // Valor padrão
+
+        // Define o valor padrão de status como disponível se não for preenchido
         $statusPermitidos = ['disponivel', 'em_processo', 'adotado'];
         if (!in_array($status, $statusPermitidos, true)) {
-            $status = 'disponivel';
+            $status = 'disponivel'; // Valor padrão
         }
 
-        // Verifica se há campos vazios
-        if (empty($nome) || empty($especie) || $idade === null || $idade === '' || empty($porte))
-        {
-            // Grava uma mensagem temporária na sessão para exibir na tela do usuário
-            $_SESSION['feedback'] = [
-                'tipo' => 'erro',
-                'mensagem' => 'Preencha todos os campos obrigatórios!'
-            ];
+        $dadosParaValidar = [
+            'nome' => $nome,
+            'especie' => $especie,
+            'idade' => $idade,
+            'descricao' => $descricao
+        ];
 
-            // Instrução HTTP para voltar ao formulário
-            header('Location: /animais/criar');
+        $erro = $this->validarFormulario($dadosParaValidar);
+        if ($erro !== null)
+        {   // Grava uma mensagem temporária na sessão para exibir na tela do usuário
+            $_SESSION['feedback'] = ['tipo' => 'erro', 'mensagem' => $erro];
+            header('Location: /animais/criar'); // Instrução HTTP para voltar ao formulário
             exit;
         }
 
-        // Se passou na validação, chama o Model para salvar
+        // Se passou nas validações, chama o Model para salvar
         $sucesso = $this->animalModel->cadastrar(
             $nome,
             $especie,
@@ -67,6 +104,7 @@ class AnimalController
             $descricao,
             $status
         );
+
         // A função Animal dos Models retorna TRUE se foi salvo tudo e aí entra no IF
         if ($sucesso)
         {

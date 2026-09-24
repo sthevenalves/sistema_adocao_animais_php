@@ -49,27 +49,16 @@ class SolicitacaoAdocao extends Model
 
     public function atualizarStatus(int $id, string $status, ?string $observacoes_admin = null): bool
     {
-        if ($observacoes_admin !== null) {
-            $query = $this->db->prepare(
-                "UPDATE solicitacoes_adocao 
-                 SET status = :status, observacoes_admin = :observacoes_admin 
-                 WHERE id = :id"
-            );
-            return $query->execute([
-                'id' => $id,
-                'status' => $status,
-                'observacoes_admin' => $observacoes_admin
-            ]);
-        }
-
         $query = $this->db->prepare(
             "UPDATE solicitacoes_adocao 
-             SET status = :status 
-             WHERE id = :id"
+         SET status = :status, observacoes_admin = :observacoes_admin 
+         WHERE id = :id"
         );
+
         return $query->execute([
             'id' => $id,
-            'status' => $status
+            'status' => $status,
+            'observacoes_admin' => $observacoes_admin
         ]);
     }
 

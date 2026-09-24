@@ -106,4 +106,10 @@ class Animal extends Model
 
         return $query->fetchAll();
     }
+
+    public function atualizarStatus(int $id, string $status): bool
+    {
+        $query = $this->db->prepare("UPDATE animais SET status = :status WHERE id = :id");
+        return $query->execute(['id' => $id, 'status' => $status]);
+    }
 }

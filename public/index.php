@@ -38,14 +38,15 @@ function exigirLogin(string $uriAtual): void
     }
 }
 
-// 2. Pega o caminho da URL acessada no navegador
+// Pega o caminho da URL acessada no navegador
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$metodo = $_SERVER['REQUEST_METHOD'];
 
-/// 3. Roteamento das URLs para os métodos do Controller
+/// Roteamento das URLs para os métodos do Controller
 if ($uri === '/animais' || $uri === '/') {
     (new AnimalController())->index();
 
-// rotas de login/logout (Parte 1 - Autenticacao)
+// rotas de login/logout (Autenticacao)
 } elseif ($uri === '/login' && $metodo === 'GET') {
     (new AuthController())->formLogin();
 } elseif ($uri === '/login' && $metodo === 'POST') {

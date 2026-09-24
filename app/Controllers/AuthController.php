@@ -49,7 +49,6 @@ class AuthController
             exit;
         }
 
-
         session_regenerate_id(true);
 
         $_SESSION['usuario'] = [

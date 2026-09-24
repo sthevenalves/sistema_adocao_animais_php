@@ -46,15 +46,6 @@ CREATE TABLE solicitacoes_adocao (
     FOREIGN KEY (adotante_id) REFERENCES adotantes_perfis(id)
 );
 
-# Inserções de usuarios
-INSERT INTO usuarios (nome, email, senha, tipo) VALUES
-('Admin ONG', 'admin@ong.com', 'hash_senha_admin', 'admin'),
-('João Silva', 'joao@email.com', 'hash_senha_user', 'adotante'),
-('Maria Oliveira', 'maria@email.com', 'hash_senha_user2', 'adotante'),
-('Carlos Souza', 'carlos@email.com', 'hash_senha_user3', 'adotante'),
-('Ana Lima', 'ana@email.com', 'hash_senha_user4', 'adotante'),
-('Suporte ONG', 'suporte@ong.com', 'hash_senha_admin2', 'admin');
-
 # Inserções de animais
 INSERT INTO animais (nome, especie, idade_anos, porte, vacinado, descricao, status) VALUES
 ('Woody', 'Cachorro', 3, 'Pequeno', 1, 'Branco e caramelo', 'disponivel'),
@@ -66,8 +57,8 @@ INSERT INTO animais (nome, especie, idade_anos, porte, vacinado, descricao, stat
 
 # Inserções de adotantes_perfis
 INSERT INTO adotantes_perfis (usuario_id, cpf, telefone, tipo_moradia, tem_outros_pets) VALUES
+(1, '567.890.123-44', '(42) 95555-5555', 'Apartamento', 0),
 (2, '123.456.789-00', '(42) 99999-9999', 'Casa', 1),
 (3, '234.567.890-11', '(42) 98888-8888', 'Apartamento', 0),
 (4, '345.678.901-22', '(42) 97777-7777', 'Casa', 1),
-(5, '456.789.012-33', '(42) 96666-6666', 'Chácara', 1),
-(2, '567.890.123-44', '(42) 95555-5555', 'Apartamento', 0);
+(5, '456.789.012-33', '(42) 96666-6666', 'Chácara', 1);
