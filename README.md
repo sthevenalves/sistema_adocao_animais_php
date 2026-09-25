@@ -44,6 +44,10 @@ Aplicação web desenvolvida em **PHP 8+ (Vanilla MVC)** e **MySQL 8.4** para ge
 * Ações que deveriam ser exclusivas de um administrador, como **aprovar/rejeitar solicitações de adoção**, cadastrar/editar animais e listar adotantes, ficam disponíveis para todos.
 * Não há validação de perfil nas rotas nem nos controllers, e a interface exibe os mesmos menus para qualquer usuário.
 
+### 4. Geração de hash de senha fora da aplicação
+* Os hashes de senha inseridos via `script.sql` (dados iniciais dos usuários) foram **gerados manualmente por fora do sistema**, e não por uma função ou tela dentro da aplicação.
+* Não existe uma funcionalidade de cadastro que gere o hash automaticamente com `password_hash()` no momento da inserção, o hash já vem pronto no banco. Para criar novos usuários além dos presentes no `script.sql`, é necessário gerar o hash manualmente no PHP (fora da aplicação) e inseri-lo diretamente no banco de dados.
+
 ---
 
 ## 📁 Estrutura de Arquivos e Funções

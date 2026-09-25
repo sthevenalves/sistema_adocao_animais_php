@@ -46,18 +46,6 @@ CREATE TABLE solicitacoes_adocao (
     FOREIGN KEY (adotante_id) REFERENCES adotantes_perfis(id)
 );
 
-<<<<<<< HEAD
-=======
-# Inserções de usuarios
-INSERT INTO usuarios (nome, email, senha, tipo) VALUES
-('Admin ONG', 'admin@ong.com', '$2y$10$Hr//bw5zm/bS3sp86w.Hne1DLcdK87QqGs8bvN2XqoKK4l9rMvYay', 'admin'),
-('João Silva', 'joao@email.com', 'hash_senha_user', 'adotante'),
-('Maria Oliveira', 'maria@email.com', 'hash_senha_user2', 'adotante'),
-('Carlos Souza', 'carlos@email.com', 'hash_senha_user3', 'adotante'),
-('Ana Lima', 'ana@email.com', 'hash_senha_user4', 'adotante'),
-('Suporte ONG', 'suporte@ong.com', 'hash_senha_admin2', 'admin');
-
->>>>>>> e72d342 (fix: corrige hash das senhas dos usuários)
 # Inserções de animais
 INSERT INTO animais (nome, especie, idade_anos, porte, vacinado, descricao, status) VALUES
 ('Woody', 'Cachorro', 3, 'Pequeno', 1, 'Branco e caramelo', 'disponivel'),
@@ -66,6 +54,13 @@ INSERT INTO animais (nome, especie, idade_anos, porte, vacinado, descricao, stat
 ('Pipoca', 'Outro', 1, 'Pequeno', 0, 'Coelho muito ativo e brincalhão', 'disponivel'),
 ('Luna', 'Gato', 4, 'Medio', 1, 'Gata preta castrada e quieta', 'adotado'),
 ('Bob', 'Cachorro', 7, 'Medio', 0, 'SRD idoso que gosta de caminhar', 'disponivel');
+
+INSERT INTO usuarios (id, nome, email, senha, tipo) VALUES
+(1, 'Admin ONG', 'admin@ong.com', '$2y$10$gYBQ5Mjn6wK/aFFzj8lsFerjXFZ6/k9Pa8wOVL57cJo0QMX4gbWym', 'admin'),
+(2, 'João Silva', 'joao@email.com', '$2y$10$oTkKQqIGsS9oGPIbRloPz.UPZJbV2jR4EK.RMSpuI3R/ikwv8lqAe', 'adotante'),
+(3, 'Maria Oliveira', 'maria@email.com', '$2y$10$oTkKQqIGsS9oGPIbRloPz.UPZJbV2jR4EK.RMSpuI3R/ikwv8lqAe', 'adotante'),
+(4, 'Carlos Souza', 'carlos@email.com', '$2y$10$oTkKQqIGsS9oGPIbRloPz.UPZJbV2jR4EK.RMSpuI3R/ikwv8lqAe', 'adotante'),
+(5, 'Ana Lima', 'ana@email.com', '$2y$10$oTkKQqIGsS9oGPIbRloPz.UPZJbV2jR4EK.RMSpuI3R/ikwv8lqAe', 'adotante');
 
 # Inserções de adotantes_perfis
 INSERT INTO adotantes_perfis (usuario_id, cpf, telefone, tipo_moradia, tem_outros_pets) VALUES
